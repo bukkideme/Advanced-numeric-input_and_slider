@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.textBox = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // textBox
@@ -58,5 +60,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

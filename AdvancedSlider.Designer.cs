@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.trackBar = new System.Windows.Forms.TrackBar();
-            this.label = new System.Windows.Forms.Label();
+            this.parameterLabel = new System.Windows.Forms.Label();
             this.textBox = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -43,15 +45,17 @@
             this.trackBar.Name = "trackBar";
             this.trackBar.Size = new System.Drawing.Size(121, 45);
             this.trackBar.TabIndex = 0;
+            this.trackBar.Scroll += new System.EventHandler(this.trackBar_Scroll);
+            this.trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
             // 
-            // label
+            // parameterLabel
             // 
-            this.label.AutoSize = true;
-            this.label.Location = new System.Drawing.Point(9, 2);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(82, 13);
-            this.label.TabIndex = 1;
-            this.label.Text = "parameterName";
+            this.parameterLabel.AutoSize = true;
+            this.parameterLabel.Location = new System.Drawing.Point(9, 2);
+            this.parameterLabel.Name = "parameterLabel";
+            this.parameterLabel.Size = new System.Drawing.Size(82, 13);
+            this.parameterLabel.TabIndex = 1;
+            this.parameterLabel.Text = "parameterName";
             // 
             // textBox
             // 
@@ -69,7 +73,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.textBox);
-            this.Controls.Add(this.label);
+            this.Controls.Add(this.parameterLabel);
             this.Controls.Add(this.trackBar);
             this.Name = "AdvancedSlider";
             this.Size = new System.Drawing.Size(121, 92);
@@ -82,7 +86,8 @@
         #endregion
 
         private System.Windows.Forms.TrackBar trackBar;
-        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label parameterLabel;
         private System.Windows.Forms.TextBox textBox;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

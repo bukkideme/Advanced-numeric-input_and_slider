@@ -12,14 +12,13 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace UserControlTesterProject
-{
+{    
     public partial class AdvancedSlider : UserControl
     {
         private double ActualValue;
-        private int SliderResolution = 10_000;
-        private double MinimumValue;
-        private double MaximumValue;
-        
+        private int SliderResolution = 1000;
+        private bool SliderMoving = false;
+
         /// <summary>
         /// Use the required format specifier string. The default is "G": 
         /// https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString.
@@ -27,19 +26,25 @@ namespace UserControlTesterProject
         /// If you need less or more, you can change this like "E3" for example (in this case the 3rd digit will be rounded).
         /// </summary>
         public string NumberFormatSpecifier { get; set; } = "G";
+        public double MinimumValue { get; private set; }
+        public double MaximumValue { get; private set; }
+        /// <summary>
+        /// If false, out of range values will be ignored. If true, value will be coerced to actual min or max limit.
+        /// Default is false.
+        /// </summary>
+        [Description("If false, out of range values will be ignored. If true, value will be coerced to actual MinimumValue or MaximumValue limit.")]
+        public bool CoerceOutOfRange { get; set; } = false;
 
         public int SmallChange
         {
             get => trackBar.SmallChange;
             set => trackBar.SmallChange = value;
         }
-
         public int LargeChange
         {
             get => trackBar.LargeChange;
             set => trackBar.LargeChange = value;
-        }
-                
+        }                
 
         /// <summary>
         /// Color used to indicate edit mode of the control. Default is Color.LightBlue.
@@ -59,27 +64,68 @@ namespace UserControlTesterProject
         [Browsable(true)]
         [Category("Action")]
         [Description("Invoked when input was not parsable as a number")]
-        public event EventHandler InvalidInputOccured;
+        public event EventHandler InvalidInput;
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when input is out of range")]
+        public event EventHandler OutOfRange;
 
         public AdvancedSlider()
         {
             InitializeComponent();            
             textBox.BackColor = SystemColors.Window;
             trackBar.Minimum = 0;
-            trackBar.Maximum = 10_000;
+            trackBar.Maximum = SliderResolution;
             MinimumValue = 0;
-            MaximumValue = 10_000;
+            MaximumValue = SliderResolution;
         }
 
-        public void SetMinimum(double minVal)
+        /// <summary>
+        /// Sets the minimum limit of the accepted input range.
+        /// </summary>
+        /// <param name="minLimit">Requested new minimum limit.</param>
+        /// <returns>Returns false if actual value is below the new requested minimum limit, and ignores the new limit value.</returns>
+        public bool SetMinimum(double minLimit)
         {
-            MinimumValue = minVal;
-            //mi van ha az aktuális érték nem rangebe esik??!
+            if (ActualValue < minLimit) return false;
+            MinimumValue = minLimit;
+            return true;
         }
 
-        public void SetMaximum(double maxVal)
+        /// <summary>
+        /// Sets the maximum limit of the accepted input range.
+        /// </summary>
+        /// <param name="maxLimit">Requested new minimum limit.</param>
+        /// <returns>Returns false if actual value is above the requested new maximum limit, and ignores the new limit value.</returns>
+        public bool SetMaximum(double maxLimit)
         {
-            MaximumValue = maxVal;
+            if (ActualValue > maxLimit) return false;
+            MaximumValue = maxLimit;
+            return true;
+        }
+
+        /// <summary>
+        /// Use this to programmatically set the value of the user control.
+        /// </summary>
+        /// <param name="newVal"></param>
+        public void SetValue(double newVal)
+        {
+            if (newVal > MaximumValue)
+            {
+                if (CoerceOutOfRange) ActualValue = MaximumValue;
+                OutOfRange?.Invoke(this, null);
+            }
+            else if (newVal < MinimumValue)
+            {
+                if (CoerceOutOfRange) ActualValue = MinimumValue;
+                OutOfRange?.Invoke(this, null);
+            }
+            else ActualValue = newVal;
+
+            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+            textBox.BackColor = SystemColors.Window;
+            trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
         }
 
         private double CalcPercent(double value)
@@ -87,16 +133,9 @@ namespace UserControlTesterProject
             return (value - MinimumValue) / (MaximumValue - MinimumValue) * 100;
         }
 
-        /// <summary>
-        /// Use this to programmatically set the value of the user control.
-        /// </summary>
-        /// <param name="val"></param>
-        public void SetValue(double val)
+        private double CalcValueFromPercent(double percent)
         {
-            ActualValue = val;
-            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
-            textBox.BackColor = SystemColors.Window;
-            trackBar.Value = (int)Math.Floor(CalcPercent(val) / 100 * SliderResolution);
+            return percent / 100 * (MaximumValue - MinimumValue) + MinimumValue;            
         }
 
         /// <summary>
@@ -108,23 +147,45 @@ namespace UserControlTesterProject
             return ActualValue;
         }
 
+        public void SetLabel(string label)
+        {
+            parameterLabel.Text = label;
+        }
+
+        public void EnableToolTip(string text)
+        {
+            toolTip1.SetToolTip(textBox, text);
+        }
+
+        public void DisableToolTip()
+        {
+            toolTip1.RemoveAll();
+        }
+
         private void textBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 if (double.TryParse(textBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double newVal))
                 {
-                    ActualValue = newVal;
-
-                    //int tester = (int)Math.Floor(CalcPercent(newVal) / 100 * SliderResolution);
-                    trackBar.Value = (int)Math.Floor(CalcPercent(newVal) / 100 * SliderResolution);
-                    //Invoke the Event which will bubble up in the chain, to the calling Form.
-                    EnterKeyUpCustom?.Invoke(this, e);
+                    if (newVal > MaximumValue)
+                    {
+                        if (CoerceOutOfRange) ActualValue = MaximumValue;
+                        OutOfRange?.Invoke(this, null);
+                    }
+                    else if (newVal < MinimumValue)
+                    {
+                        if (CoerceOutOfRange) ActualValue = MinimumValue;
+                        OutOfRange?.Invoke(this, null);
+                    }
+                    else ActualValue = newVal;
                 }
-                else InvalidInputOccured?.Invoke(this, e);
+                else InvalidInput?.Invoke(this, e);
 
+                EnterKeyUpCustom?.Invoke(this, e);
                 textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
                 textBox.BackColor = SystemColors.Window;
+                trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
             }
         }
 
@@ -132,17 +193,26 @@ namespace UserControlTesterProject
         {
             if (double.TryParse(textBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double newVal))
             {
-                ActualValue = newVal;
-                trackBar.Value = (int)Math.Floor(CalcPercent(newVal) / 100 * SliderResolution);
-                //Invoke the Event which will bubble up in the chain, to the calling Form.
-                FocusLostCustom?.Invoke(this, e);
+                if (newVal > MaximumValue)
+                {
+                    if (CoerceOutOfRange) ActualValue = MaximumValue;
+                    OutOfRange?.Invoke(this, null);
+                }
+                else if (newVal < MinimumValue)
+                {
+                    if (CoerceOutOfRange) ActualValue = MinimumValue;
+                    OutOfRange?.Invoke(this, null);
+                }
+                else ActualValue = newVal;
             }
-            else InvalidInputOccured?.Invoke(this, e);
+            else InvalidInput?.Invoke(this, e);
 
+            FocusLostCustom?.Invoke(this, e);
             textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
             textBox.BackColor = SystemColors.Window;
+            trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
         }
-
+            
         private void textBox_Enter(object sender, EventArgs e)
         {
             textBox.BackColor = ValidatingColor;
@@ -151,6 +221,18 @@ namespace UserControlTesterProject
         private void textBox_TextChanged(object sender, EventArgs e)
         {
             textBox.BackColor = ValidatingColor;
+        }
+
+        private void trackBar_Scroll(object sender, EventArgs e)
+        {
+            double percent = ((double)trackBar.Value / SliderResolution) * 100;
+            ActualValue = CalcValueFromPercent(percent);
+            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+        }
+
+        private void trackBar_MouseUp(object sender, MouseEventArgs e)
+        {
+            textBox.BackColor = SystemColors.Window;
         }
     }
 }

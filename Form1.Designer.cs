@@ -31,8 +31,8 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.advancedNumericBox1 = new UserControlTesterProject.AdvancedNumericBox();
             this.advancedSlider1 = new UserControlTesterProject.AdvancedSlider();
+            this.advancedNumericBox1 = new UserControlTesterProject.AdvancedNumericBox();
             this.SuspendLayout();
             // 
             // button1
@@ -41,7 +41,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
+            this.button1.Text = "Test";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -49,9 +49,9 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(13, 92);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(165, 20);
             this.textBox1.TabIndex = 4;
-            this.textBox1.Text = "indikátor";
             // 
             // label1
             // 
@@ -62,31 +62,32 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "advancedNumericBox1:";
             // 
-            // advancedNumericBox1
-            // 
-            this.advancedNumericBox1.Location = new System.Drawing.Point(13, 37);
-            this.advancedNumericBox1.Name = "advancedNumericBox1";
-            this.advancedNumericBox1.NumberFormatSpecifier = "G";
-            this.advancedNumericBox1.Size = new System.Drawing.Size(118, 20);
-            this.advancedNumericBox1.TabIndex = 3;
-            this.advancedNumericBox1.ValidatingColor = System.Drawing.Color.LightBlue;
-            // 
             // advancedSlider1
             // 
             this.advancedSlider1.LargeChange = 10;
-            this.advancedSlider1.Location = new System.Drawing.Point(375, 20);
+            this.advancedSlider1.Location = new System.Drawing.Point(277, 20);
             this.advancedSlider1.Name = "advancedSlider1";
             this.advancedSlider1.NumberFormatSpecifier = "G";
-            this.advancedSlider1.Size = new System.Drawing.Size(121, 92);
+            this.advancedSlider1.Size = new System.Drawing.Size(259, 92);
             this.advancedSlider1.SmallChange = 1;
             this.advancedSlider1.TabIndex = 6;
             this.advancedSlider1.ValidatingColor = System.Drawing.Color.LightBlue;
+            // 
+            // advancedNumericBox1
+            // 
+            this.advancedNumericBox1.CoerceOutOfRange = false;
+            this.advancedNumericBox1.Location = new System.Drawing.Point(13, 37);
+            this.advancedNumericBox1.Name = "advancedNumericBox1";
+            this.advancedNumericBox1.NumberFormatSpecifier = "G";
+            this.advancedNumericBox1.Size = new System.Drawing.Size(121, 20);
+            this.advancedNumericBox1.TabIndex = 3;
+            this.advancedNumericBox1.ValidatingColor = System.Drawing.Color.LightBlue;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(586, 251);
             this.Controls.Add(this.advancedSlider1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);

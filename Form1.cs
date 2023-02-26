@@ -20,9 +20,31 @@ namespace UserControlTesterProject
             //advancedNumericBox1.NumberFormatSpecifier = "E3";
             advancedNumericBox1.EnterKeyUpCustom += AdvancedNumericBox1_EnterKeyUpCustom;
             advancedNumericBox1.FocusLostCustom += AdvancedNumericBox1_FocusLostCustom;
-            advancedNumericBox1.InvalidInputOccured += AdvancedNumericBox1_InvalidInputOccured;
+            advancedNumericBox1.InvalidInput += AdvancedNumericBox1_InvalidInputOccured;
+            advancedNumericBox1.OutOfRange += AdvancedNumericBox1_OutOfRange;
 
+            advancedNumericBox1.SetMinimum(-100);
+            advancedNumericBox1.SetMaximum(500);
+            advancedNumericBox1.EnableToolTip($"Min: -100\r\nMax: 500\r\nOut of range will be coerced.");
+            advancedNumericBox1.SetValue(100);
+            advancedNumericBox1.CoerceOutOfRange = true;
 
+            advancedSlider1.EnterKeyUpCustom += AdvancedNumericBox1_EnterKeyUpCustom;
+            advancedSlider1.FocusLostCustom += AdvancedNumericBox1_FocusLostCustom;
+            advancedSlider1.InvalidInput += AdvancedNumericBox1_InvalidInputOccured;
+            advancedSlider1.OutOfRange += AdvancedNumericBox1_OutOfRange;
+
+            advancedSlider1.SetLabel("parameter:");
+            advancedSlider1.SetMinimum(-100);
+            advancedSlider1.SetMaximum(500);
+            advancedSlider1.EnableToolTip($"Min: -100\r\nMax: 500\r\nOut of range will be coerced.");
+            advancedSlider1.SetValue(100);
+            advancedSlider1.CoerceOutOfRange = true;
+        }
+
+        private void AdvancedNumericBox1_OutOfRange(object sender, EventArgs e)
+        {
+            MessageBox.Show("Invalid input, out of range!");
         }
 
         private void AdvancedNumericBox1_InvalidInputOccured(object sender, EventArgs e)
