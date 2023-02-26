@@ -17,7 +17,7 @@ Features for both UserControls:
 
 AdvancedSlider:
 - Handles double values. TrackBar range is now fixed to 0-1000 (SliderResolution), so the slider double resolution is (Max-min)/1000. You can change this if needed.
-- Set label test
+- Set label text
 - Set SmallChange/LargeChange for slider
 
 https://user-images.githubusercontent.com/51174971/221413767-7f283c76-5ee3-48a0-b3e2-1fbfcab79bf2.mp4
