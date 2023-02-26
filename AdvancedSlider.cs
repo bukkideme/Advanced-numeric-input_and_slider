@@ -35,11 +35,17 @@ namespace UserControlTesterProject
         [Description("If false, out of range values will be ignored. If true, value will be coerced to actual MinimumValue or MaximumValue limit.")]
         public bool CoerceOutOfRange { get; set; } = false;
 
+        /// <summary>
+        /// Sets the small steps for the trackBar integer range between 0-1000
+        /// </summary>
         public int SmallChange
         {
             get => trackBar.SmallChange;
             set => trackBar.SmallChange = value;
         }
+        /// <summary>
+        /// Sets the large steps for the trackBar integer range between 0-1000
+        /// </summary>
         public int LargeChange
         {
             get => trackBar.LargeChange;
