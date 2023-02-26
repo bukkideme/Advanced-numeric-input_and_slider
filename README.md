@@ -12,9 +12,11 @@ Features for both UserControls:
 - Capture and ignore wrong inputs
 - Set or hide tooltip
 - Standard NumberFormatSpecifier option (default is "G")
+- Controls on UI are resizable in design time (AdvancedSlider has only slider resize option)
 - EnterKeyUpCustom, FocusLostCustom, InvalidInput, OutOfRange events
 
 AdvancedSlider:
+- Handles double values. TrackBar range is now fixed to 0-1000 (SliderResolution), so the slider double resolution is (Max-min)/1000. You can change this if needed.
 - Set label test
 - Set SmallChange/LargeChange for slider
 
