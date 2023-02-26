@@ -35,9 +35,9 @@ namespace UserControlTesterProject
             advancedSlider1.OutOfRange += AdvancedNumericBox1_OutOfRange;
 
             advancedSlider1.SetLabel("parameter:");
-            advancedSlider1.SetMinimum(-100);
+            advancedSlider1.SetMinimum(-300);
             advancedSlider1.SetMaximum(500);
-            advancedSlider1.EnableToolTip($"Min: -100\r\nMax: 500\r\nOut of range will be coerced.");
+            advancedSlider1.EnableToolTip($"Min: -300\r\nMax: 500\r\nOut of range will be coerced.");
             advancedSlider1.SetValue(100);
             advancedSlider1.CoerceOutOfRange = true;
         }

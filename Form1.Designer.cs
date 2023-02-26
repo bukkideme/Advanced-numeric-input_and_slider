@@ -64,6 +64,7 @@
             // 
             // advancedSlider1
             // 
+            this.advancedSlider1.CoerceOutOfRange = false;
             this.advancedSlider1.LargeChange = 10;
             this.advancedSlider1.Location = new System.Drawing.Point(277, 20);
             this.advancedSlider1.Name = "advancedSlider1";
@@ -87,7 +88,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 251);
+            this.ClientSize = new System.Drawing.Size(586, 139);
             this.Controls.Add(this.advancedSlider1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
