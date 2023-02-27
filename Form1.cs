@@ -36,7 +36,7 @@ namespace UserControlTesterProject
 
             advancedSlider1.ValueChangedFinal += AdvancedSlider1_ValueChangedFinal;
 
-            advancedSlider1.SetLabel("parameter:");
+            advancedSlider1.Label = "parameter:";
             advancedSlider1.SetMinimum(-0.1);
             advancedSlider1.SetMaximum(1.5);
             advancedSlider1.EnableToolTip($"Min: -0.1\r\nMax: 1.5\r\nOut of range will be coerced.");

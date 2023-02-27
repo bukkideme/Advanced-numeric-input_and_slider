@@ -35,6 +35,16 @@ namespace UserControlTesterProject
         public bool CoerceOutOfRange { get; set; } = false;
 
         /// <summary>
+        /// Label text.
+        /// </summary>
+        [Description("Control label text")]
+        public string Label
+        {
+            get => parameterLabel.Text;
+            set => parameterLabel.Text = value;
+        }
+
+        /// <summary>
         /// Sets the small steps for the trackBar integer range between 0-1000
         /// </summary>
         public int SmallChange
@@ -206,11 +216,6 @@ namespace UserControlTesterProject
         public double GetValue()
         {
             return ActualValue;
-        }
-
-        public void SetLabel(string label)
-        {
-            parameterLabel.Text = label;
         }
 
         public void EnableToolTip(string text)
