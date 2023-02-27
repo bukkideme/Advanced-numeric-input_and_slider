@@ -35,6 +35,7 @@ namespace UserControlTesterProject
             advancedSlider1.OutOfRange += AdvancedNumericBox1_OutOfRange;
 
             advancedSlider1.ValueChangedFinal += AdvancedSlider1_ValueChangedFinal;
+            advancedSlider1.ValueChanged += AdvancedSlider1_ValueChanged;
 
             advancedSlider1.Label = "parameter:";
             advancedSlider1.SetMinimum(-0.1);
@@ -42,6 +43,11 @@ namespace UserControlTesterProject
             advancedSlider1.EnableToolTip($"Min: -0.1\r\nMax: 1.5\r\nOut of range will be coerced.");
             advancedSlider1.SetValue(0.5);
             advancedSlider1.CoerceOutOfRange = true;
+        }
+
+        private void AdvancedSlider1_ValueChanged(object sender, EventArgs e)
+        {
+            textBox3.Text = $"{advancedSlider1.GetValue()}";
         }
 
         private void AdvancedSlider1_ValueChangedFinal(object sender, EventArgs e)
