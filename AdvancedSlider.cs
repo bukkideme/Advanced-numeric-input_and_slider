@@ -16,15 +16,14 @@ namespace UserControlTesterProject
     public partial class AdvancedSlider : UserControl
     {
         private double ActualValue;
-        private int SliderResolution = 1000;
-        private bool SliderMoving = false;
-
+        
         /// <summary>
         /// Use the required format specifier string. The default is "G": 
         /// https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#GFormatString.
         /// Use Precision specifier if required, for example scientific notation "E" has a default of 6 precision.
         /// If you need less or more, you can change this like "E3" for example (in this case the 3rd digit will be rounded).
         /// </summary>
+        [Description("Use the required format specifier string. The default is \"G\"")]
         public string NumberFormatSpecifier { get; set; } = "G";
         public double MinimumValue { get; private set; }
         public double MaximumValue { get; private set; }
@@ -50,8 +49,22 @@ namespace UserControlTesterProject
         {
             get => trackBar.LargeChange;
             set => trackBar.LargeChange = value;
-        }                
-
+        }
+                
+        [Description("Sets the trackBar/slider steps. The slider resolution will be (MaximumValue-MinimumValue)/sliderResolution. Default is 1000.")]
+        public int SliderResolution { get; private set; } = 1000;
+        /// <summary>
+        /// Sets the trackBar/slider steps. 
+        /// The slider resolution will be (MaximumValue-MinimumValue)/sliderResolution. Default is 1000.
+        /// </summary>
+        public void SetSliderResolution(int sliderResolution)
+        {
+            SliderResolution = sliderResolution;
+            trackBar.Maximum = SliderResolution; 
+            //recalc slider position
+            trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
+        }
+        
         /// <summary>
         /// Color used to indicate edit mode of the control. Default is Color.LightBlue.
         /// </summary>
@@ -214,9 +227,9 @@ namespace UserControlTesterProject
             else InvalidInput?.Invoke(this, e);
 
             FocusLostCustom?.Invoke(this, e);
-            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
-            textBox.BackColor = SystemColors.Window;
+            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);            
             trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
+            textBox.BackColor = SystemColors.Window;
         }
             
         private void textBox_Enter(object sender, EventArgs e)

@@ -65,6 +65,7 @@ namespace UserControlTesterProject
         private void button1_Click(object sender, EventArgs e)
         {            
             advancedNumericBox1.SetValue(0.000034567);
+            //advancedSlider1.SetSliderResolution(10000);
         }
     }
 }
