@@ -2,6 +2,7 @@
 
 Tested some concepts for an advanced numeric input control, and also for a slider supporting double values.
 This was only a test, so use it and change it if you find it useful for your tasks.
+Note: you might need to rebuild the solution after cloning, if you cannot open the designer files.
 
 Features for both UserControls:
 - User inputs validated via both events lost focus and Enter key up
