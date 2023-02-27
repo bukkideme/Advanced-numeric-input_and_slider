@@ -34,12 +34,19 @@ namespace UserControlTesterProject
             advancedSlider1.InvalidInput += AdvancedNumericBox1_InvalidInputOccured;
             advancedSlider1.OutOfRange += AdvancedNumericBox1_OutOfRange;
 
+            advancedSlider1.ValueChangedFinal += AdvancedSlider1_ValueChangedFinal;
+
             advancedSlider1.SetLabel("parameter:");
             advancedSlider1.SetMinimum(-0.1);
             advancedSlider1.SetMaximum(1.5);
             advancedSlider1.EnableToolTip($"Min: -0.1\r\nMax: 1.5\r\nOut of range will be coerced.");
             advancedSlider1.SetValue(0.5);
             advancedSlider1.CoerceOutOfRange = true;
+        }
+
+        private void AdvancedSlider1_ValueChangedFinal(object sender, EventArgs e)
+        {
+            textBox2.Text = $"{advancedSlider1.GetValue()}";
         }
 
         private void AdvancedNumericBox1_OutOfRange(object sender, EventArgs e)
@@ -55,11 +62,13 @@ namespace UserControlTesterProject
         private void AdvancedNumericBox1_FocusLostCustom(object sender, EventArgs e)
         {
             textBox1.Text = $"{advancedNumericBox1.GetValue()}";
+            //textBox2.Text = $"{advancedSlider1.GetValue()}";
         }
 
         private void AdvancedNumericBox1_EnterKeyUpCustom(object sender, EventArgs e)
         {
             textBox1.Text = $"{advancedNumericBox1.GetValue()}";
+            //textBox2.Text = $"{advancedSlider1.GetValue()}";
         }
 
         private void button1_Click(object sender, EventArgs e)

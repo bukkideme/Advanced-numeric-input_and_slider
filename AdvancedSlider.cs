@@ -62,13 +62,23 @@ namespace UserControlTesterProject
             SliderResolution = sliderResolution;
             trackBar.Maximum = SliderResolution; 
             //recalc slider position
-            trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
+            trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);            
         }
         
         /// <summary>
         /// Color used to indicate edit mode of the control. Default is Color.LightBlue.
         /// </summary>
         public Color ValidatingColor { get; set; } = Color.LightBlue;
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked each time when the value changes. Slider scrolling changes are included")]
+        public event EventHandler ValueChanged;
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked each time when the value changes. Slider scrolling not included!")]
+        public event EventHandler ValueChangedFinal;
 
         [Browsable(true)]
         [Category("Action")]
@@ -109,6 +119,8 @@ namespace UserControlTesterProject
             if (ActualValue < minLimit)
             {
                 ActualValue = minLimit;
+                ValueChanged?.Invoke(this, null);
+                ValueChangedFinal?.Invoke(this, null);
                 textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
                 textBox.BackColor = SystemColors.Window;
                 trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
@@ -125,11 +137,43 @@ namespace UserControlTesterProject
             if (ActualValue > maxLimit)
             {
                 ActualValue = maxLimit;
+                ValueChanged?.Invoke(this, null);
+                ValueChangedFinal?.Invoke(this, null);
                 textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
                 textBox.BackColor = SystemColors.Window;
                 trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
             }
             MaximumValue = maxLimit;
+        }
+
+        private void HandleOutOfRange(double newVal)
+        {
+            if (newVal > MaximumValue)
+            {
+                if (CoerceOutOfRange)
+                {
+                    ActualValue = MaximumValue;
+                    ValueChanged?.Invoke(this, null);
+                    ValueChangedFinal?.Invoke(this, null);
+                }
+                OutOfRange?.Invoke(this, null);
+            }
+            else if (newVal < MinimumValue)
+            {
+                if (CoerceOutOfRange)
+                {
+                    ActualValue = MinimumValue;
+                    ValueChanged?.Invoke(this, null);
+                    ValueChangedFinal?.Invoke(this, null);
+                }
+                OutOfRange?.Invoke(this, null);
+            }
+            else
+            {
+                ActualValue = newVal;
+                ValueChanged?.Invoke(this, null);
+                ValueChangedFinal?.Invoke(this, null);
+            }
         }
 
         /// <summary>
@@ -138,17 +182,7 @@ namespace UserControlTesterProject
         /// <param name="newVal"></param>
         public void SetValue(double newVal)
         {
-            if (newVal > MaximumValue)
-            {
-                if (CoerceOutOfRange) ActualValue = MaximumValue;
-                OutOfRange?.Invoke(this, null);
-            }
-            else if (newVal < MinimumValue)
-            {
-                if (CoerceOutOfRange) ActualValue = MinimumValue;
-                OutOfRange?.Invoke(this, null);
-            }
-            else ActualValue = newVal;
+            HandleOutOfRange(newVal);
 
             textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
             textBox.BackColor = SystemColors.Window;
@@ -195,17 +229,7 @@ namespace UserControlTesterProject
             {
                 if (double.TryParse(textBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double newVal))
                 {
-                    if (newVal > MaximumValue)
-                    {
-                        if (CoerceOutOfRange) ActualValue = MaximumValue;
-                        OutOfRange?.Invoke(this, null);
-                    }
-                    else if (newVal < MinimumValue)
-                    {
-                        if (CoerceOutOfRange) ActualValue = MinimumValue;
-                        OutOfRange?.Invoke(this, null);
-                    }
-                    else ActualValue = newVal;
+                    HandleOutOfRange(newVal);
                 }
                 else InvalidInput?.Invoke(this, e);
 
@@ -220,17 +244,7 @@ namespace UserControlTesterProject
         {
             if (double.TryParse(textBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out double newVal))
             {
-                if (newVal > MaximumValue)
-                {
-                    if (CoerceOutOfRange) ActualValue = MaximumValue;
-                    OutOfRange?.Invoke(this, null);
-                }
-                else if (newVal < MinimumValue)
-                {
-                    if (CoerceOutOfRange) ActualValue = MinimumValue;
-                    OutOfRange?.Invoke(this, null);
-                }
-                else ActualValue = newVal;
+                HandleOutOfRange(newVal);
             }
             else InvalidInput?.Invoke(this, e);
 
@@ -254,11 +268,29 @@ namespace UserControlTesterProject
         {
             double percent = ((double)trackBar.Value / SliderResolution) * 100;
             ActualValue = CalcValueFromPercent(percent);
+            ValueChanged?.Invoke(this, null);            
             textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
         }
 
         private void trackBar_MouseUp(object sender, MouseEventArgs e)
         {
+            double percent = ((double)trackBar.Value / SliderResolution) * 100;
+            ActualValue = CalcValueFromPercent(percent);
+            ValueChanged?.Invoke(this, null);
+            ValueChangedFinal?.Invoke(this, null);
+            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+
+            textBox.BackColor = SystemColors.Window;
+        }
+
+        private void trackBar_KeyUp(object sender, KeyEventArgs e)
+        {
+            double percent = ((double)trackBar.Value / SliderResolution) * 100;
+            ActualValue = CalcValueFromPercent(percent);
+            ValueChanged?.Invoke(this, null);
+            ValueChangedFinal?.Invoke(this, null);
+            textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+
             textBox.BackColor = SystemColors.Window;
         }
     }

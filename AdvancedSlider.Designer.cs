@@ -46,6 +46,7 @@
             this.trackBar.Size = new System.Drawing.Size(121, 45);
             this.trackBar.TabIndex = 0;
             this.trackBar.Scroll += new System.EventHandler(this.trackBar_Scroll);
+            this.trackBar.KeyUp += new System.Windows.Forms.KeyEventHandler(this.trackBar_KeyUp);
             this.trackBar.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar_MouseUp);
             // 
             // parameterLabel

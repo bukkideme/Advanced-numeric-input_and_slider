@@ -33,6 +33,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.advancedSlider1 = new UserControlTesterProject.AdvancedSlider();
             this.advancedNumericBox1 = new UserControlTesterProject.AdvancedNumericBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -64,6 +65,7 @@
             // 
             // advancedSlider1
             // 
+            this.advancedSlider1.BackColor = System.Drawing.SystemColors.Window;
             this.advancedSlider1.CoerceOutOfRange = false;
             this.advancedSlider1.LargeChange = 10;
             this.advancedSlider1.Location = new System.Drawing.Point(277, 20);
@@ -84,13 +86,22 @@
             this.advancedNumericBox1.TabIndex = 3;
             this.advancedNumericBox1.ValidatingColor = System.Drawing.Color.LightBlue;
             // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(277, 128);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(165, 20);
+            this.textBox2.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(586, 139);
+            this.ClientSize = new System.Drawing.Size(586, 160);
             this.Controls.Add(this.advancedSlider1);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.advancedNumericBox1);
             this.Controls.Add(this.button1);
@@ -107,6 +118,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private AdvancedSlider advancedSlider1;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
 
