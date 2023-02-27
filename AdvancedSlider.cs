@@ -101,27 +101,35 @@ namespace UserControlTesterProject
         }
 
         /// <summary>
-        /// Sets the minimum limit of the accepted input range.
+        /// Sets the minimum limit of the accepted input range. If actual value is below the new limit, we set it to the new limit.
         /// </summary>
         /// <param name="minLimit">Requested new minimum limit.</param>
-        /// <returns>Returns false if actual value is below the new requested minimum limit, and ignores the new limit value.</returns>
-        public bool SetMinimum(double minLimit)
+        public void SetMinimum(double minLimit)
         {
-            if (ActualValue < minLimit) return false;
+            if (ActualValue < minLimit)
+            {
+                ActualValue = minLimit;
+                textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+                textBox.BackColor = SystemColors.Window;
+                trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
+            }
             MinimumValue = minLimit;
-            return true;
         }
 
         /// <summary>
-        /// Sets the maximum limit of the accepted input range.
+        /// Sets the maximum limit of the accepted input range. If actual value is above the new limit, we set it to the new limit.
         /// </summary>
         /// <param name="maxLimit">Requested new minimum limit.</param>
-        /// <returns>Returns false if actual value is above the requested new maximum limit, and ignores the new limit value.</returns>
-        public bool SetMaximum(double maxLimit)
+        public void SetMaximum(double maxLimit)
         {
-            if (ActualValue > maxLimit) return false;
+            if (ActualValue > maxLimit)
+            {
+                ActualValue = maxLimit;
+                textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+                textBox.BackColor = SystemColors.Window;
+                trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
+            }
             MaximumValue = maxLimit;
-            return true;
         }
 
         /// <summary>

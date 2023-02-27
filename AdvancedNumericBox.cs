@@ -66,27 +66,23 @@ namespace UserControlTesterProject
         }
 
         /// <summary>
-        /// Sets the minimum limit of the accepted input range.
+        /// Sets the minimum limit of the accepted input range. If actual value is below the new limit, we set it to the new limit.
         /// </summary>
         /// <param name="minLimit">Requested new minimum limit.</param>
-        /// <returns>Returns false if actual value is below the new requested minimum limit, and ignores the new limit value.</returns>
-        public bool SetMinimum(double minLimit)
+        public void SetMinimum(double minLimit)
         {
-            if (ActualValue < minLimit) return false;            
-            MinimumValue = minLimit;
-            return true;
+            if (ActualValue < minLimit) ActualValue = minLimit;            
+            MinimumValue = minLimit;            
         }
 
         /// <summary>
-        /// Sets the maximum limit of the accepted input range.
+        /// Sets the maximum limit of the accepted input range. If actual value is above the new limit, we set it to the new limit.
         /// </summary>
         /// <param name="maxLimit">Requested new minimum limit.</param>
-        /// <returns>Returns false if actual value is above the requested new maximum limit, and ignores the new limit value.</returns>
-        public bool SetMaximum(double maxLimit)
+        public void SetMaximum(double maxLimit)
         {
-            if (ActualValue > maxLimit) return false;
-            MaximumValue = maxLimit;
-            return true;
+            if (ActualValue > maxLimit) ActualValue = maxLimit;
+            MaximumValue = maxLimit;           
         }
 
         /// <summary>
