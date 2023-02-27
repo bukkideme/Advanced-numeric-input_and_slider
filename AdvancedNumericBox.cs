@@ -71,7 +71,12 @@ namespace UserControlTesterProject
         /// <param name="minLimit">Requested new minimum limit.</param>
         public void SetMinimum(double minLimit)
         {
-            if (ActualValue < minLimit) ActualValue = minLimit;            
+            if (ActualValue < minLimit)
+            {
+                ActualValue = minLimit;
+                textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+                textBox.BackColor = SystemColors.Window;
+            }
             MinimumValue = minLimit;            
         }
 
@@ -81,7 +86,12 @@ namespace UserControlTesterProject
         /// <param name="maxLimit">Requested new minimum limit.</param>
         public void SetMaximum(double maxLimit)
         {
-            if (ActualValue > maxLimit) ActualValue = maxLimit;
+            if (ActualValue > maxLimit)
+            {
+                ActualValue = maxLimit;
+                textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
+                textBox.BackColor = SystemColors.Window;
+            }
             MaximumValue = maxLimit;           
         }
 
