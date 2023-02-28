@@ -21,7 +21,11 @@ AdvancedSlider:
 - Set label text
 - Set SmallChange/LargeChange for slider
 
-https://user-images.githubusercontent.com/51174971/221413767-7f283c76-5ee3-48a0-b3e2-1fbfcab79bf2.mp4
+
+
+https://user-images.githubusercontent.com/51174971/221809670-af83de98-3440-42f9-9ae8-bb37125b066a.mp4
+
+
 
 Some usage examples in the project:
 
