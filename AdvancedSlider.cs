@@ -126,6 +126,8 @@ namespace UserControlTesterProject
         /// <param name="minLimit">Requested new minimum limit.</param>
         public void SetMinimum(double minLimit)
         {
+            MinimumValue = minLimit;
+
             if (ActualValue < minLimit)
             {
                 ActualValue = minLimit;
@@ -134,8 +136,7 @@ namespace UserControlTesterProject
                 textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
                 textBox.BackColor = SystemColors.Window;
                 trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
-            }
-            MinimumValue = minLimit;
+            }            
         }
 
         /// <summary>
@@ -144,6 +145,8 @@ namespace UserControlTesterProject
         /// <param name="maxLimit">Requested new minimum limit.</param>
         public void SetMaximum(double maxLimit)
         {
+            MaximumValue = maxLimit;
+
             if (ActualValue > maxLimit)
             {
                 ActualValue = maxLimit;
@@ -152,8 +155,7 @@ namespace UserControlTesterProject
                 textBox.Text = ActualValue.ToString(NumberFormatSpecifier, CultureInfo.InvariantCulture);
                 textBox.BackColor = SystemColors.Window;
                 trackBar.Value = (int)Math.Floor(CalcPercent(ActualValue) / 100 * SliderResolution);
-            }
-            MaximumValue = maxLimit;
+            }            
         }
 
         private void HandleOutOfRange(double newVal)
